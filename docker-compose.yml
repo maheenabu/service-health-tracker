@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports: ["27017:27017"]
+    environment:
+      MONGO_INITDB_DATABASE: healthtracker
+  app:
+    build: .
+    ports: ["8080:8080"]
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/healthtracker
+      JWT_SIGNING_SECRET: "replace-me-in-prod"
+    depends_on: [mongo]

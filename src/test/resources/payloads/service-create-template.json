@@ -1,0 +1,9 @@
+{
+  "name": "auth-service",
+  "version": "1.0.3",
+  "baseUrl": "__BASE_URL__",
+  "checkIntervalSeconds": 1,
+  "headers": {
+    "X-API-Key": "demo"
+  }
+}
