@@ -37,19 +37,19 @@ public class ServiceController {
 
     @Operation(summary = "Get one service with recent health events (last 20)")
     @GetMapping("/services/{id}")
-    public Map<String, Object> one(@PathVariable String id) {
+    public Map<String, Object> one(@PathVariable("id") String id) {
         return registry.getWithRecent(id, 20);
     }
 
     @Operation(summary = "Patch service metadata")
     @PatchMapping("/services/{id}")
-    public MonitoredService patch(@PathVariable String id, @RequestBody ServiceUpdateRequest req) {
+    public MonitoredService patch(@PathVariable("id") String id, @RequestBody ServiceUpdateRequest req) {
         return registry.patch(id, req);
     }
 
     @Operation(summary = "Delete/unregister a service")
     @DeleteMapping("/services/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") String id) {
         boolean deleted = registry.delete(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }

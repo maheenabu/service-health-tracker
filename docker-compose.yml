@@ -11,5 +11,5 @@ services:
     ports: ["8080:8080"]
     environment:
       MONGODB_URI: mongodb://mongo:27017/healthtracker
-      JWT_SIGNING_SECRET: "replace-me-in-prod"
+      JWT_SIGNING_SECRET: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbi11c2VyIiwiaWF0IjoxNzYwMzA3MTY4LCJleHAiOjE3NjAzMTA3NjgsImlzQWRtaW4iOnRydWV9.amHsNi1naOF9A-Lx7NipSt7bZV-taiwIhKmpmYMY9Ks"
     depends_on: [mongo]
