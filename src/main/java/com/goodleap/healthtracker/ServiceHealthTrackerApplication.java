@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class ServiceHealthTrackerApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ServiceHealthTrackerApplication.class, args);
+         SpringApplication.run(ServiceHealthTrackerApplication.class, args);
     }
 
     @Bean CommandLineRunner printSampleToken() { return args -> {

@@ -18,11 +18,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
-@Service @EnableScheduling
+@Service
+@EnableScheduling
 public class HealthCheckService {
     private static final Logger log = LoggerFactory.getLogger(HealthCheckService.class);
     private final MonitoredServiceRepository services;
@@ -58,7 +58,8 @@ public class HealthCheckService {
         int code; ServiceStatus status;
         try {
             HttpHeaders headers = new HttpHeaders();
-            Map<String, String> hdrs = s.getHeaders(); if (hdrs != null) hdrs.forEach(headers::add);
+            Map<String, String> hdrs = s.getHeaders();
+            if (hdrs != null) hdrs.forEach(headers::add);
             URI uri = UriComponentsBuilder.fromHttpUrl(s.getBaseUrl()).build().toUri();
             ResponseEntity<String> resp = client.get().uri(uri).headers(h -> h.addAll(headers)).retrieve().toEntity(String.class);
             code = resp.getStatusCode().value();
@@ -75,14 +76,13 @@ public class HealthCheckService {
         record(s, start, 0, ServiceStatus.UNHEALTHY);
     }
 
-    private void record(MonitoredService s, Instant start, int httpCode, ServiceStatus status) {
+    private void record(MonitoredService service, Instant start, int httpCode, ServiceStatus status) {
         long ms = Duration.between(start, Instant.now()).toMillis();
-        s.setLastCheckedAt(Instant.now()); s.setLastResponseTimeMs(ms); s.setLastHttpStatus(httpCode); s.setStatus(status);
-        services.save(s);
-        events.save(new HealthEvent(s.getId(), s.getLastCheckedAt(), ms, httpCode, status));
-    }
-
-    public List<MonitoredService> findUnhealthyOrUnknown() {
-        return services.findAll().stream().filter(s -> s.getStatus() != ServiceStatus.HEALTHY).toList();
+        service.setLastCheckedAt(Instant.now());
+        service.setLastResponseTimeMs(ms);
+        service.setLastHttpStatus(httpCode);
+        service.setStatus(status);
+        services.save(service);
+        events.save(new HealthEvent(service.getId(), service.getLastCheckedAt(), ms, httpCode, status));
     }
 }

@@ -31,4 +31,10 @@ public class GlobalExceptionHandler {
                         400, ex.getMessage(),
                         req.getRequestURI()));
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiError> handleNotFound(NotFoundException ex, HttpServletRequest req) {
+        return ResponseEntity.status(404)
+                .body(new ApiError(Instant.now(), 404, ex.getMessage(), req.getRequestURI()));
+    }
 }
